@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from "react";
 
 const initialState = { user: null, loading: true };
 
-export const UserStore = createContext(initialState);
+export const UserContext = createContext(initialState);
 
 const userReducer = (state, action) => {
   switch (action.type) {
@@ -18,5 +18,5 @@ const userReducer = (state, action) => {
 export default props => {
   const [state, dispatch] = useReducer(userReducer, initialState);
 
-  return <UserStore.Provider value={{ state, dispatch }} {...props} />;
+  return <UserContext.Provider value={{ state, dispatch }} {...props} />;
 };

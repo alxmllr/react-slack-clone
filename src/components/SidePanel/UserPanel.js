@@ -1,23 +1,23 @@
-import React from "react";
-import { Grid, Header, Icon, Dropdown } from "semantic-ui-react";
+import React, { useContext } from "react";
+import { Grid, Header, Icon, Dropdown, Image } from "semantic-ui-react";
 import firebase from "../../firebase";
+import { UserContext } from "../../contexts/user";
 
-const UserPanel = () => {
-  const handleSignOut = async () => {
-    try {
-      await firebase.auth().signOut();
-      console.log("Signed out");
-    } catch (e) {
-      console.error(e);
-    }
-  };
+const handleSignOut = async () => {
+  try {
+    await firebase.auth().signOut();
+  } catch (e) {
+    console.error(e);
+  }
+};
 
+const UserPanel = ({ user }) => {
   const dropdownOptions = [
     {
       key: "user",
       text: (
         <span>
-          Signed in as <strong>User</strong>
+          Signed in as <strong>{user.displayName}</strong>
         </span>
       ),
       disabled: true
@@ -40,13 +40,33 @@ const UserPanel = () => {
             <Icon name="code" />
             <Header.Content>Dev Chat</Header.Content>
           </Header>
+          <Header style={{ padding: "0.25em" }} as="h4" inverted>
+            <Dropdown
+              trigger={
+                <span>
+                  <Image src={user.photoURL} spaced="right" avatar />
+                  {user.displayName}
+                </span>
+              }
+              options={dropdownOptions}
+            />
+          </Header>
         </Grid.Row>
-        <Header style={{ padding: "0.25em" }} as="h4" inverted>
-          <Dropdown trigger={<span>User</span>} options={dropdownOptions} />
-        </Header>
       </Grid.Column>
     </Grid>
   );
 };
 
-export default UserPanel;
+const UserPanelContainer = () => {
+  const {
+    state: { user }
+  } = useContext(UserContext);
+
+  if (!user) {
+    return null;
+  }
+
+  return <UserPanel user={user} />;
+};
+
+export default UserPanelContainer;

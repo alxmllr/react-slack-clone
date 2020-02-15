@@ -8,7 +8,7 @@ import Register from "./components/Auth/Register";
 import Login from "./components/Auth/Login";
 import Spinner from "./components/Spinner";
 
-import UserProvider, { UserStore } from "./contexts/user";
+import UserProvider, { UserContext } from "./contexts/user";
 
 import "semantic-ui-css/semantic.min.css";
 
@@ -23,14 +23,10 @@ const Root = ({ history }) => {
   const {
     state: { user, loading: userIsLoading },
     dispatch
-  } = useContext(UserStore);
-
-  console.log({ user, loading: userIsLoading });
+  } = useContext(UserContext);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
-      console.log({ user });
-
       if (user) {
         dispatch({ type: "setUser", payload: user });
         history.push("/");
