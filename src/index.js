@@ -9,6 +9,9 @@ import Login from "./components/Auth/Login";
 import Spinner from "./components/Spinner";
 
 import UserProvider, { UserContext } from "./contexts/user";
+import ChannelsProvider, {
+  Context as ChannelsContext
+} from "./contexts/channels";
 
 import "semantic-ui-css/semantic.min.css";
 
@@ -21,7 +24,7 @@ import {
 
 const Root = ({ history }) => {
   const {
-    state: { user, loading: userIsLoading },
+    state: { loading: userIsLoading },
     dispatch
   } = useContext(UserContext);
 
@@ -55,7 +58,9 @@ const RootWithAuth = withRouter(Root);
 ReactDOM.render(
   <Router>
     <UserProvider>
-      <RootWithAuth />
+      <ChannelsProvider>
+        <RootWithAuth />
+      </ChannelsProvider>
     </UserProvider>
   </Router>,
   document.getElementById("root")
